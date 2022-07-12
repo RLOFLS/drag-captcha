@@ -13,6 +13,10 @@ Drag-and-drop graphics verification, easy to use. [中文](./README.md)
 
 ![Example](./docs/drag-en.gif)
 
+## practice
+
+Copy `dragCaptcha.css` `dragCaptcha.js` to your own project application
+
 ## logic
 
 ![Logic Diagram](./docs/logic.png)

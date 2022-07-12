@@ -13,6 +13,10 @@
 
 ![示例](./docs/drag-zh.gif)
 
+## 实践
+
+复制 `dragCaptcha.css` `dragCaptcha.js` 到自己项目应用
+
 ## 逻辑
 
 ![逻辑图](./docs/logic.png)
