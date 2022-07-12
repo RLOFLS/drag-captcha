@@ -1,6 +1,7 @@
 # Drag-Captcha
 
-Drag-and-drop graphics verification, easy to use. [中文](./README.md)
+Drag-and-drop graphics verification, easy to use. [中文](./README.md)\
+`composer require rlofls/drag-captcha`
 
 ![show](./docs/drag-en.png)
 

@@ -1,6 +1,7 @@
 # Drag-Captcha
 
-拖拽图形验证，简单易用。 [english](./README-en.md)
+拖拽图形验证，简单易用。 [english](./README-en.md)\
+`composer require rlofls/drag-captcha`
 
 ![show](./docs/drag-zh.png)
 
