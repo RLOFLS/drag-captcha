@@ -35,3 +35,8 @@ Copy `dragCaptcha.css` `dragCaptcha.js` to your own project application
   - `matchSuccess()` sets the match success style
   - `matchFail()` sets the match failure style
   - `destroy()` destroys the drag-and-drop interface
+
+## todo
+
+- custom background
+- returns rendered data "out of order" background
