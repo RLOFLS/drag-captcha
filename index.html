@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>demo drag verify</title>
+
+    <link rel="stylesheet" type="text/css" href="./dragCaptcha.css">
+</head>
+
+<script type="module">
+    import {Drag, Utils} from "./dragCaptcha.js";
+
+    let drag = new Drag(document.body, 'en');
+
+    let btn = document.getElementById("show")
+
+    //Implement the match callback method
+    drag.matchFunc = function ($mask) {
+        //request verify
+        Utils.request('POST', '/dragVerify', JSON.stringify({'mask': $mask}), Utils.bind(this, function(response) {
+            if (response.code === 1) {
+                this.matchSuccess();
+                
+                //Turn off verification
+                setTimeout(() => drag.destroy(), 1000)
+            } else {
+                this.matchFail();
+
+                //match failed re-render
+                setTimeout(() => btn.dispatchEvent(new Event('click')), 1000)
+            }
+
+        }), Utils.bind(this, function(response) {
+            this.matchFail()
+
+            //match failed re-render
+            setTimeout(() => btn.dispatchEvent(new Event('click')), 1000)
+        }))
+    }
+    
+    function show(evt) {
+        //request rendering data
+        Utils.request('GET', '/dragData', null, function(response) {
+            drag.render(response)
+        }, function(error) {
+            console.log(error)
+        })
+        
+    }
+    btn.addEventListener('click', show)
+
+</script>
+<body>
+    
+    <button id="show">show</button>
+</body>
+
+
+</html>

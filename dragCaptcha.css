@@ -1,0 +1,46 @@
+/**
+ * This file is part of drag-captcha.
+ *
+ * Licensed under The MIT License
+ *
+ * @author rlofls
+ */
+#drag-verify-root {
+    position: absolute;
+    box-shadow: 0px 0px 5px 1px gray;
+    border-radius: 7px;
+    overflow: hidden;
+    border: 5px solid white;
+}
+#drag-verify-bg {
+    margin: 0;
+    padding: 0;
+    border-radius: 5px
+}
+#drag-verify-mask {
+    position: absolute;
+    z-index: 100;
+}
+
+#drag-verify-path {
+    position: absolute;
+    fill: none;
+    stroke: Yellow;
+    fill:none;
+    stroke-width: 1;
+    z-index: 50;
+}
+
+#drag-verify-note {  
+    margin: 0;
+    padding: 0;
+    height: 30px;
+    background-color: white;
+    font-size: medium;
+    color: dimgrey;
+    text-align: center;
+    line-height: 30px;
+    letter-spacing: 2px;
+    font-weight: 600;
+    border-radius: 5px
+}
