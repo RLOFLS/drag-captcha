@@ -19,6 +19,7 @@ Copy `dragCaptcha.css` `dragCaptcha.js` to your own project application
 
 ## logic
 
+Reference `index.php` `index.html`
 ![Logic Diagram](./docs/logic.png)
 
 ## api

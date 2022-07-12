@@ -15,6 +15,7 @@
 
 ## 实践
 
+参考 `index.php` `index.html`
 复制 `dragCaptcha.css` `dragCaptcha.js` 到自己项目应用
 
 ## 逻辑
