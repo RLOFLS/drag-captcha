@@ -36,6 +36,10 @@ Copy `dragCaptcha.css` `dragCaptcha.js` to your own project application
   - `matchFail()` sets the match failure style
   - `destroy()` destroys the drag-and-drop interface
 
+## New features in development
+
+- Added obfuscated graphics distraction
+
 ## todo
 
 - custom background
