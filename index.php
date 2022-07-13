@@ -33,8 +33,10 @@ switch ($path) {
         $dst = json_decode($_SESSION['drag-dst'], true);
 
         $res = json_encode(['code' => 0]);
-        if (Drag::verify($dst, $mask)) {
+        if ($dst && Drag::verify($dst, $mask)) {
             $res = json_encode(['code' => 1]);
+        } else {
+            unset($_SESSION['drag-dst']);
         }
         header('Content-Type:application/json');
         echo $res;

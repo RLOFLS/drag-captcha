@@ -55,7 +55,7 @@ class Drag
         imagesavealpha($imgMask, true);
         imagesavealpha($imgDst, true);
 
-        imagecopyresized($imgDst, $imgBG, 0, 0, 0,0, 250, 160, imagesx($imgBG), imagesy($imgBG));
+        imagecopyresized($imgDst, $imgBG, 0, 0, 0,0, $this->bgWidth, $this->bgHeight, imagesx($imgBG), imagesy($imgBG));
 
         $imgMW= imagesx($imgMask);
         $imgMH = imagesy($imgMask);
