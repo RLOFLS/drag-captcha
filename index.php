@@ -8,6 +8,7 @@ declare(strict_types = 1);
  * @author rlofls
  */
 use Rlofls\DragCaptcha\Drag;
+use Rlofls\DragCaptcha\Resources;
 
 require_once (__DIR__ . '/vendor/autoload.php');
 
@@ -15,10 +16,20 @@ session_start();
 $url = $_SERVER['REQUEST_URI'];
 $path = parse_url($url, PHP_URL_PATH);
 
+//Add custom background image
+Resources::$customBg = [
+    __DIR__ . '/customBg/1.png',
+    __DIR__ . '/customBg/2.png',
+    __DIR__ . '/customBg/3.png',
+    __DIR__ . '/customBg/4.png',
+    __DIR__ . '/customBg/5.png',
+    __DIR__ . '/customBg/6.png',
+];
+
 switch ($path) {
     case '/dragData':
         $drag = new Drag();
-        [$dst, $font] = $drag->generate();
+        [$dst, $font] = $drag->generate(true);
 
         //cache target value
         $_SESSION['drag-dst'] = json_encode($dst);

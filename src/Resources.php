@@ -20,6 +20,8 @@ class Resources
 {
     public const BASE_PATH = __DIR__ . '/Resources/';
 
+    public static $customBg = [];
+
     /**
      * @var string[]
      * 200 * 160 px multiple
@@ -62,7 +64,10 @@ class Resources
      */
     public static function bg(): string
     {
-        return self::$bg[random_int(0, count(self::$bg) - 1)];
+        if (! empty(self::$customBg)) {
+            return Utils::randValue(self::$customBg);
+        }
+        return Utils::randValue(self::$bg);
     }
 
     /**
@@ -71,6 +76,23 @@ class Resources
      */
     public static function mask(): array
     {
-        return self::$mask[random_int(0, count(self::$mask) - 1)];
+        return Utils::randValue(self::$mask);
     }
+
+    /**
+     * @param string $img
+     * @return array|string[]
+     * @throws Exception
+     */
+    public static function uniqueMask(string $img): array
+    {
+        $copyMask = [];
+        foreach (self::$mask as $item) {
+            if ($item['img'] !== $img) {
+               array_push($copyMask, $item);
+            }
+        }
+        return Utils::randValue($copyMask);
+    }
+
 }

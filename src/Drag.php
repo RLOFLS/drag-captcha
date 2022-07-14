@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace Rlofls\DragCaptcha;
 
 /**
- * Class Verify
+ * Class Drag
  * @package Rlofls\DragCaptcha
  * date 2022/7/11
  */
@@ -36,14 +36,9 @@ class Drag
     private $maskWH = 60;
 
     /**
-     * @var int verify offset default
-     */
-    private $offset = 3;
-
-    /**
      * @throws \Exception
      */
-    public function generate(): array
+    public function generate(bool $useConfuse = false): array
     {
         $bgPath = Resources::bg();
         $mask = Resources::mask();
@@ -57,33 +52,10 @@ class Drag
 
         imagecopyresized($imgDst, $imgBG, 0, 0, 0,0, $this->bgWidth, $this->bgHeight, imagesx($imgBG), imagesy($imgBG));
 
-        $imgMW= imagesx($imgMask);
-        $imgMH = imagesy($imgMask);
-
         [$dstPosition, $maskPosition] = $this->getPosition();
 
-        for ($x = 0; $x < $imgMW; $x++) {
-            for ($y = 0; $y < $imgMH; $y++) {
-                $maskIndex = ImageColorAt($imgMask, $x, $y);
-                $maskRgb = imagecolorsforindex($imgMask, $maskIndex);
-                if ($maskRgb['alpha'] !== 127) {
-                    $tx = $dstPosition['left'] + $x;
-                    $ty = $dstPosition['top'] + $y;
-                    $tIndex = imagecolorat($imgDst, $tx, $ty);
-                    $tRgb = imagecolorsforindex($imgDst, $tIndex);
-
-                    $color = imagecolorallocate($imgMask, $tRgb['red'], $tRgb['green'], $tRgb['blue']);
-                    imagesetpixel($imgMask, $x, $y, $color);
-
-                    $r = $tRgb['red'] * $maskRgb['red'] / 255;
-                    $g = $tRgb['green'] * $maskRgb['green'] / 255;
-                    $b = $tRgb['blue'] * $maskRgb['blue'] / 255;
-                    $tColor = imagecolorallocate($imgDst, (int)$r, (int)$g, (int)$b);
-                    imagesetpixel($imgDst, $tx, $ty, $tColor);
-                }
-            }
-        }
-
+        $maker = new Maker($useConfuse);
+        $maker->swapPixels($dstPosition, $mask, $imgDst, $imgMask);
 
         ob_start();
         imagepng($imgDst);
