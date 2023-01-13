@@ -9,53 +9,51 @@
     <link rel="stylesheet" type="text/css" href="./dragCaptcha.css">
 </head>
 
-<script type="module">
-    import {Drag, Utils} from "./dragCaptcha.js";
-
-    let drag = new Drag(document.body);
-
-    let btn = document.getElementById("show")
-
-    //Implement the match callback method
-    drag.matchFunc = function ($mask) {
-        //request verify
-        Utils.request('POST', '/dragVerify', JSON.stringify({'mask': $mask}), Utils.bind(this, function(response) {
-            if (response.code === 1) {
-                this.matchSuccess();
-                
-                //Turn off verification
-                setTimeout(() => drag.destroy(), 1000)
-            } else {
-                this.matchFail();
-
-                //match failed re-render
-                setTimeout(() => btn.dispatchEvent(new Event('click')), 1000)
-            }
-
-        }), Utils.bind(this, function(response) {
-            this.matchFail()
-
-            //match failed re-render
-            setTimeout(() => btn.dispatchEvent(new Event('click')), 1000)
-        }))
+<style>
+    #show {
+        border: 1px solid gray;
+        border-radius: 3px;
+        width: 60px;
+        height: 30px;
+        font-size: large;
+        margin-top: 300px;
+        margin-left: 200px;
     }
-    
-    function show(evt) {
-        //request rendering data
-        Utils.request('GET', '/dragData', null, function(response) {
-            drag.render(response)
-        }, function(error) {
-            console.log(error)
-        })
-        
-    }
-    btn.addEventListener('click', show)
-
-</script>
+</style>
 <body>
     
     <button id="show">show</button>
 </body>
+<script type="module">
+    import {DragCaptcha} from "./dragCaptcha.js";
+    //设置要绑定的按钮
+    let btn = document.getElementById("show")
 
+    //1.设置 请求数据api 地址， 默认： /dragData
+    //DragCaptcha.prototype.apiDataUrl = '/dragData'
+    //2.设置 请求验证api 地址， 默认： /dragVerify
+    //DragCaptcha.prototype.apiVerifyUrl = '/dragVerify'
 
+    //3.设置语言 默认 zh：中文， en:英文
+    //DragCaptcha.prototype.lang = 'en'
+
+    //4.设置debug  默认 true 会打印日志
+    //DragCaptcha.prototype.debug = false
+
+    //5.设置验证成功 callback
+    DragCaptcha.prototype.cbSuccess = function(drag) {
+        console.log("验证通过 cid:", drag.cid)
+        //处理自己业务逻辑 提交表单 ...
+
+        //如果业务逻辑失败。需要重新添加点击事件, 因为在验证成功时候会取消点击事件
+        //console.log("业务逻辑失败，重新绑定点击事件")
+        //drag.addClickEventListener()
+    }
+    //6. 设置验证失败 callback
+    DragCaptcha.prototype.cbFail = function(drag) {
+        console.log("验证失败")
+    }
+    let drag = new DragCaptcha(btn);
+
+</script>
 </html>

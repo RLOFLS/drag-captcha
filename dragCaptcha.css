@@ -44,3 +44,264 @@
     font-weight: 600;
     border-radius: 5px
 }
+
+
+.dc-captcha {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    background-color: #00000000;
+    height: -webkit-fill-available;
+    width: -webkit-fill-available;
+    display: none;
+    place-items: center;
+    user-select: none;
+}
+
+.dc-content {
+    background-color: #f5f8fa;
+    width: auto;
+    height: auto;
+    z-index: 999;
+    box-sizing: border-box;
+    padding: 9px;
+    border-radius: 6px;
+    box-shadow: 0 0 11px 0 #999999;
+    position: relative;
+    overflow: hidden;
+}
+
+.dc-title {
+    margin: 0;
+    padding: 0;
+    height: 30px;
+    font-size: medium;
+    color: #0000009e;
+    text-align: left;
+    line-height: 30px;
+    letter-spacing: 2px;
+    font-weight: 600;
+    border-radius: 5px;
+    position: relative
+}
+
+.dc-action {
+    padding-top: 7px;
+    position: relative
+}
+
+.dc-body {
+    width: 100%;
+    height: auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.dc-body-bg {
+    margin: 0;
+    padding: 0;
+    border-radius: 5px;
+    -webkit-user-drag: none; 
+}
+
+.dc-body-mask {
+    position: absolute;
+    z-index: 100;
+    -webkit-user-drag: none;
+}
+
+.dc-body-mask:hover {
+    cursor:move
+}
+
+.dc-body-mask-svg {
+    position: absolute;
+    fill: none;
+    stroke: Yellow;
+    fill:none;
+    stroke-width: 1.5;
+    z-index: 50;
+}
+
+.dc-body-mask-svg:hover {
+    stroke: LightYellow;
+}
+
+.dc-body-tip {
+    position: absolute;
+    font-size: 14px;
+    line-height: 30px;
+    text-align: center;
+    width: 100%;
+    border-radius: 0 0 5px 5px;
+    font-weight: 700;
+    bottom: -30px;
+    color: #fff;
+    z-index: 200;
+    letter-spacing: 2px;
+}
+
+.dc-body-mask-path {}
+
+.dc-icon {
+    fill:none;
+    fill-rule:evenodd;
+    stroke:#000000;
+    stroke-width:0.6;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    stroke-miterlimit:0;
+    stroke-opacity:0.47;
+    paint-order:stroke;
+    margin-right: 7px;
+}
+
+.dc-icon:hover {
+    stroke-opacity:0.67;
+}
+
+
+.dc-ani-close {
+    animation: aniClose .5s ease-in-out both;
+}
+.dc-ani-open {
+    animation: aniOpen .5s ease-in-out both, aniOpenBg .4s ease-out both .4s;
+}
+
+@keyframes aniClose {
+    to {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+}
+
+@keyframes aniOpen {
+    from {
+        opacity: 0;
+        transform: scale(0.3); 
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes aniOpenBg {
+    to {
+        background-color: #00000022;
+    }
+}
+
+.dc-ani-left-hide {
+    animation: aniLeftHide ease-in .5s both;
+}
+
+.dc-ani-right-show {
+    animation: aniRightShow ease-out .5s forwards;
+}
+
+.dc-ani-text-show {
+    animation: aniTextShow ease-out .5s forwards;
+}
+
+@keyframes aniTextShow {
+    0% {
+            
+        transform: scale(0.9);
+    }
+    30% {
+    
+        transform: scale(0.9);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes aniLeftHide {
+    0% {
+        transform: scale(1) translateZ(0);
+    }
+    30% {
+        transform: scale(0.95) translateZ(0);
+    }
+    100% {
+        transform: scale(0.95) translate3d(-120%,0,0);
+    }
+}
+@keyframes aniRightShow {
+    0% {
+              
+        transform: scale(0.95) translate3d(120%,0,0); 
+    }
+    80% {
+        
+        transform: scale(0.95) translateZ(0);
+    }
+    100% {
+        transform: scale(1) translateZ(0);
+    }
+}
+
+.dc-ani-shake {
+    animation: aniShakeX .5s;
+    
+}
+
+@keyframes aniShadowSuccess {
+    70% {
+        box-shadow: 0 0 11px 5px #4caf50 
+    }
+    to {
+        box-shadow: 0 0 11px 0 #999999;
+    }
+}
+
+@keyframes aniShadowFail {
+    70% {
+        box-shadow: 0 0 11px 5px #f44336 
+    }
+    to {
+        box-shadow: 0 0 11px 0 #999999;
+    }
+}
+
+@keyframes aniShakeX {
+    from,
+    to {
+      transform: translate3d(0, 0, 0);
+    }
+    10%,
+    40%,
+    70% {
+      transform: translate3d(-0.3rem, 0, 0);
+    }
+    20%,
+    60%,
+    90% {
+      transform: translate3d(0.3rem, 0, 0);
+    }
+}
+
+.dc-ani-success-tip {
+    background-color: #4caf50;
+    animation: aniTip 1s linear;
+}
+
+.dc-ani-fail-tip {
+    background-color: #f44336;
+    animation: aniTip 1s linear;
+}
+
+@keyframes aniTip {
+    
+    50% {
+        bottom: 0px
+    }
+    80% {
+        bottom: 0px
+    }
+    100% {
+        bottom: -30px;
+    }
+}

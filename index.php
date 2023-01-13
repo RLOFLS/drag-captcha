@@ -10,7 +10,7 @@ declare(strict_types = 1);
 use Rlofls\DragCaptcha\Drag;
 use Rlofls\DragCaptcha\Resources;
 
-require_once (__DIR__ . '/vendor/autoload.php');
+require_once(__DIR__ . '/vendor/autoload.php');
 
 session_start();
 $url = $_SERVER['REQUEST_URI'];
@@ -29,23 +29,28 @@ Resources::$customBg = [
 switch ($path) {
     case '/dragData':
         $drag = new Drag();
-        [$dst, $font] = $drag->generate(true);
+        [$dst, $data] = $drag->generate(true);
 
         //cache target value
-        $_SESSION['drag-dst'] = json_encode($dst);
+
+        //Create a verification unique ID, user cache, and subsequent verification
+        $cid = uniqid('drag-captcha');
+        $_SESSION[$cid] = json_encode($dst);
+        $data['cid'] = $cid;
 
         header('Content-Type:application/json');
-        echo json_encode($font);
+        echo json_encode(['status' => 'success', 'data'=> $data]);
         break;
     case '/dragVerify':
         $post = json_decode(file_get_contents('php://input'), true);
+        $cid = $post['cid'] ?? '';
         $mask = $post['mask'] ?? [];
 
-        $dst = json_decode($_SESSION['drag-dst'], true);
+        $dst = json_decode($_SESSION[$cid], true);
 
-        $res = json_encode(['code' => 0]);
+        $res = json_encode(['status' => 'error']);
         if ($dst && Drag::verify($dst, $mask)) {
-            $res = json_encode(['code' => 1]);
+            $res = json_encode(['status' => 'success']);
         } else {
             unset($_SESSION['drag-dst']);
         }
@@ -53,5 +58,5 @@ switch ($path) {
         echo $res;
         break;
     default:
-        include (__DIR__ . '/index.html');
+        include(__DIR__ . '/index.html');
 }

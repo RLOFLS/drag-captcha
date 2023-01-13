@@ -1,9 +1,10 @@
 # Drag-Captcha
 
-拖拽图形验证，简单易用。 [english](./README-en.md)\
+拖拽图形验证，简单易用, 只需要绑定按钮即可使用。 [english](./README-en.md)\
 `composer require rlofls/drag-captcha`
 
 ![show](./docs/drag-zh.png)
+![示例](./docs/drag-zh.gif)
 
 - [功能介绍](#features)
   - [自定义背景](#custom-bg)
@@ -11,8 +12,6 @@
 - [运行示例](#run-demo)
 - [实践](#practice)
 - [api](#api)
-- [逻辑](#logic)
-
 ## <a id="features">功能介绍</a>
 
 ### <a id="custom-bg">自定义背景</a>
@@ -47,29 +46,96 @@
 3. `php -S 127.0.0.1:8087`
 4. 浏览器访问 `http://127.0.0.1:8087`
 
-![示例](./docs/drag-zh.gif)
-
 ## <a id="practice">实践</a>
 
 参考 `index.php` `index.html`\
-复制 `dragCaptcha.css` `dragCaptcha.js` 到自己项目应用
+复制 `dragCaptcha.css` `dragCaptcha.js` 到自己项目应用 \
+参考 html
+```html
+<body>
+    
+    <button id="show">show</button>
+</body>
+<script type="module">
+    import {DragCaptcha} from "./dragCaptcha.js";
+    //设置要绑定的按钮
+    let btn = document.getElementById("show")
+
+    //1.设置 请求数据api 地址， 默认： /dragData
+    //DragCaptcha.prototype.apiDataUrl = '/dragData'
+    //2.设置 请求验证api 地址， 默认： /dragVerify
+    //DragCaptcha.prototype.apiVerifyUrl = '/dragVerify'
+
+    //3.设置语言 默认 zh：中文， en:英文
+    //DragCaptcha.prototype.lang = 'en'
+
+    //4.设置debug  默认 true 会打印日志
+    //DragCaptcha.prototype.debug = false
+
+    //5.设置验证成功 callback
+    DragCaptcha.prototype.cbSuccess = function(drag) {
+        console.log("验证通过 cid:", drag.cid)
+        //处理自己业务逻辑 提交表单 ...
+
+        //如果业务逻辑失败。需要重新添加点击事件, 因为在验证成功时候会取消点击事件
+        //console.log("业务逻辑失败，重新绑定点击事件")
+        //drag.addClickEventListener()
+    }
+    //6. 设置验证失败 callback
+    DragCaptcha.prototype.cbFail = function(drag) {
+        console.log("验证失败")
+    }
+    let drag = new DragCaptcha(btn);
+
+</script>
+
+```
 
 ## <a id="api">api</a>
 
-- php Drag
-  - `generate()` 生成渲染数据 `dst, front`
-  - `verify()` 验证匹配结果
+- `Rlofls\DragCaptcha\Drag`
+  - `generate` 生成渲染数据 `dst, data`
+  - `verify` 验证匹配结果
 
-- js Drag
-  - `matchFunc()` 实现用户拖拽触发匹配
-  - `render()` 渲染拖拽界面
-  - `matchSuccess()` 设置 匹配成功 样式
-  - `matchFail()` 设置 匹配失败 样式
-  - `destroy()`  销毁拖拽界面
-## <a id="logic">逻辑</a>
+- 服务器api 要求， Content-Type: application/json
+  - `/dragData`---[GET]---获取验证码数据\
+    响应数据格式:
+    ```json
+    {
+      "status": "success" // error 表示失败
+      "data": {
+        //一次验证 事务id 用户自己生成
+        "cid": "drag-captcha63c0c18566074"
+        //以下数据由 Rlofls\DragCaptcha\Drag::generate 生成
+        "bgBase64": "data:image/png;base64,iV..."
+        "bgH": 160
+        "bgW": 250
+        "maskBase64": "data:image/png;base64,..."
+        "maskLeft": 114
+        "maskPath": "M 15.27429..."
+        "maskTop": 0
+        "maskViewBox": 15.875
+        "maskWH": 57
+      }
 
-![逻辑图](./docs/logic.png)
-
+    }
+    ```
+  - `/dragVerify`---[POST]---进行验证码验证\
+    请求参数
+    ```json
+    {
+      "cid": "drag-captcha63c0c1881db17"
+      "mask": {
+        "left": 149, 
+        "top": 76
+      }
+    }
+    ```
+    响应数据格式:
+    ```json
+    {"status": "error"}
+    ```
+    
 ## todo
 
 - 欢迎提交 `issuse`
