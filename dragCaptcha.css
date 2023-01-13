@@ -10,8 +10,8 @@
     left: 0px;
     top: 0px;
     background-color: #00000000;
-    height: -webkit-fill-available;
-    width: -webkit-fill-available;
+    height: 100%;
+    width: 100%;
     display: none;
     place-items: center;
     user-select: none;
@@ -78,7 +78,7 @@
     fill: none;
     stroke: Yellow;
     fill:none;
-    stroke-width: 1.5;
+    stroke-width: 1.2;
     z-index: 50;
 }
 
@@ -147,7 +147,7 @@
 
 @keyframes aniOpenBg {
     to {
-        background-color: #00000022;
+        background-color: #00000030;
     }
 }
 
@@ -209,7 +209,7 @@
 
 @keyframes aniShadowSuccess {
     70% {
-        box-shadow: 0 0 11px 5px #4caf50 
+        box-shadow: 0 0 11px 5px #4eee53 
     }
     to {
         box-shadow: 0 0 11px 0 #999999;
@@ -243,12 +243,12 @@
 }
 
 .dc-ani-success-tip {
-    background-color: #4caf50;
+    background-color: #64e768;
     animation: aniTip 1s linear;
 }
 
 .dc-ani-fail-tip {
-    background-color: #f44336;
+    background-color: #f34c40;
     animation: aniTip 1s linear;
 }
 

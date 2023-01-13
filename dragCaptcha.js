@@ -388,6 +388,39 @@ DragCaptcha.prototype.reset = function({
 DragCaptcha.prototype.maskMouseDown = function(evt) {
     this.log('drag down')
     this.isDraging = true
+    
+    //moveEvent
+    if (evt instanceof TouchEvent) {
+        let touch = evt.touches.item(0)
+        this.moveX = touch.clientX
+        this.moveY = touch.clientY
+    }
+
+    this.log('drag down end')
+}
+
+/**
+ * 
+ * @param {} evt 
+ */
+DragCaptcha.prototype.getMoveOffset = function(evt) {
+
+    Utils.doActionByClass('dc-body-mask-svg', e => {
+        e.style.transform = 'scale(1.1)'
+    })
+
+    if (evt instanceof MouseEvent) {
+        return {offsetX: evt.movementX, offsetY: evt.movementY}
+    }
+
+    if (evt instanceof TouchEvent) {
+        let touch = evt.touches.item(0)
+        let x = touch.clientX - this.moveX
+        let y = touch.clientY - this.moveY
+        this.moveX = touch.clientX
+        this.moveY = touch.clientY
+        return {offsetX: x, offsetY: y}
+    }
 }
 
 DragCaptcha.prototype.maskMouseMove = function(evt) {
@@ -398,11 +431,12 @@ DragCaptcha.prototype.maskMouseMove = function(evt) {
     let maskSvg = Utils.doActionByClass('dc-body-mask-svg')
     let mask = Utils.doActionByClass('dc-body-mask')
 
+    let {offsetX, offsetY} = this.getMoveOffset(evt)
     let oriL = parseInt(mask.style.left);
-    let abLeft =  (isNaN(oriL) ? this.maskLeft : oriL) + evt.movementX
+    let abLeft =  (isNaN(oriL) ? this.maskLeft : oriL) + offsetX
 
     let oriT = parseInt(mask.style.top);
-    let abTop = (isNaN(oriT) ? this.maskTop : oriT) + evt.movementY
+    let abTop = (isNaN(oriT) ? this.maskTop : oriT) + offsetY
 
     let dstL = abLeft + 'px';
     let dstT = abTop + 'px';
@@ -434,6 +468,9 @@ DragCaptcha.prototype.maskMouseMove = function(evt) {
 DragCaptcha.prototype.maskMouseUp = function(evy) {
 
     this.log('drag up')
+    Utils.doActionByClass('dc-body-mask-svg', e => {
+        e.style.removeProperty('transform')
+    })
     if (! this.isDraging) {
         return;
     }
@@ -457,6 +494,10 @@ DragCaptcha.prototype.addMaskListeners = function () {
         e.addEventListener('mousemove', this.eventMaskMoveListener)
         e.addEventListener('mouseup', this.eventMaskUpListener)
         e.addEventListener('mouseleave', this.eventMaskUpListener)
+
+        e.addEventListener('touchstart', this.eventMaskDownListener)
+        e.addEventListener('touchmove', this.eventMaskMoveListener)
+        e.addEventListener('touchend', this.eventMaskUpListener)
     })
 }
 
@@ -466,6 +507,10 @@ DragCaptcha.prototype.removeMaskListeners = function () {
         e.removeEventListener('mousemove', this.eventMaskMoveListener)
         e.removeEventListener('mouseup', this.eventMaskUpListener)
         e.removeEventListener('mouseleave', this.eventMaskUpListener)
+
+        e.removeEventListener('touchstart', this.eventMaskDownListener)
+        e.removeEventListener('touchmove', this.eventMaskMoveListener)
+        e.removeEventListener('touchend', this.eventMaskUpListener)
     })
 }
 
@@ -506,7 +551,7 @@ DragCaptcha.prototype.aniVerifySuccess = function () {
         e.innerHTML = Lang[that.lang].success
         e.classList.add('dc-ani-success-tip')
     })
-    Utils.doActionByClass('dc-body-mask-svg', e => e.style.stroke = "#4caf50")
+    Utils.doActionByClass('dc-body-mask-svg', e => e.style.stroke = "#4eee53")
 }
 
 DragCaptcha.prototype.aniVerifyFail = function () {
