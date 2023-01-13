@@ -366,6 +366,7 @@ DragCaptcha.prototype.reset = function({
     })
     Utils.doActionByClass('dc-body-mask-svg', e => {
         e.style.removeProperty('stroke')
+        e.style.removeProperty('transform')
         Utils.setAttrs(e, {'viewBox': '0 0 ' + maskViewBox + ' ' + maskViewBox});
         Utils.setStyles(e, {
             'width': maskWH + 'px',
@@ -397,6 +398,10 @@ DragCaptcha.prototype.maskMouseDown = function(evt) {
     }
 
     this.log('drag down end')
+    Utils.doActionByClass('dc-body-mask-svg', e => {
+        e.style.transform = 'scale(1.1)'
+        e.style.opacity = '0.5'
+    })
 }
 
 /**
@@ -405,9 +410,7 @@ DragCaptcha.prototype.maskMouseDown = function(evt) {
  */
 DragCaptcha.prototype.getMoveOffset = function(evt) {
 
-    Utils.doActionByClass('dc-body-mask-svg', e => {
-        e.style.transform = 'scale(1.1)'
-    })
+   
 
     if (evt instanceof MouseEvent) {
         return {offsetX: evt.movementX, offsetY: evt.movementY}
@@ -468,15 +471,17 @@ DragCaptcha.prototype.maskMouseMove = function(evt) {
 DragCaptcha.prototype.maskMouseUp = function(evy) {
 
     this.log('drag up')
-    Utils.doActionByClass('dc-body-mask-svg', e => {
-        e.style.removeProperty('transform')
-    })
     if (! this.isDraging) {
         return;
     }
     this.isDraging = false
 
-    let maskSvg = Utils.doActionByClass('dc-body-mask-svg', e => e.style.stroke = "DarkSlateGray")
+    let maskSvg = Utils.doActionByClass('dc-body-mask-svg', e => {
+        //e.style.stroke = "DarkSlateGray"
+        e.style.transform = 'scale(1.1)'
+        e.style.opacity = '1'
+        
+    })
 
     let l = parseInt(maskSvg.style.left)
     let t = parseInt(maskSvg.style.top)
