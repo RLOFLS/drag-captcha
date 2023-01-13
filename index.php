@@ -51,9 +51,8 @@ switch ($path) {
         $res = json_encode(['status' => 'error']);
         if ($dst && Drag::verify($dst, $mask)) {
             $res = json_encode(['status' => 'success']);
-        } else {
-            unset($_SESSION['drag-dst']);
         }
+        unset($_SESSION[$cid]);
         header('Content-Type:application/json');
         echo $res;
         break;
